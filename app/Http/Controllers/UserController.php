@@ -94,4 +94,32 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function getUserProfile($id){
+        try {
+            $user=User::where("id",$id)
+                      ->first();
+            if(!$user){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found',
+                ], 400);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User profile retrieved successfully',
+                'data' => $user,
+            ], 200);
+
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User profile cannot be retrived',
+            ], 500);
+        }
+    }
+
+
 }
