@@ -9,4 +9,18 @@ class Chat extends Model
 {
     use HasFactory;
     protected $table = 'chats';
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function message()
+    {
+        return $this->hasMany(Message::class);
+    }
+    public function userchat()
+    {
+        return $this->hasMany(UserChat::class);
+    }
 }
