@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -55,6 +56,79 @@ class AuthController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'User cannot be registered',
+                'error' => $th->getMessage()
+            ]);
+        }
+    }
+
+    public function login(Request $request){
+        try {
+            $email = $request->input('email');
+            $password = $request->input('password');
+
+
+            $validator = Validator::make($request->all(), [
+                'password' => 'required',
+                'email' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(
+                    [
+                        "success" => false,
+                        "message" => "Validation failed",
+                        "error" => $validator->errors()
+                    ],
+                    400
+                );
+            }
+
+            $user = User::query()
+            ->where('email', $email)
+            ->first();
+
+        if (!$user) {
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Email not found",
+
+                ],
+                400
+            );
+        }
+
+        $checkPasswordUser = Hash::check($password, $user->password);
+
+
+        if (!$checkPasswordUser) {
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Incorrect password",
+
+                ],
+                400
+            );
+        }
+
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        // Responder con el token
+        return response()->json(
+            [
+                "success" => true,
+                "message" => "User logged successfully",
+                "token" => $token
+            ],
+            200
+        );
+
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User cannot be logged',
                 'error' => $th->getMessage()
             ]);
         }
