@@ -26,8 +26,6 @@ class UserController extends Controller
                 'message' => 'User retrieved successfully',
                 'data' => $user
             ], 200);
-
-
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
@@ -37,12 +35,13 @@ class UserController extends Controller
         }
     }
 
-    public function updateProfile(Request $request){
+    public function updateProfile(Request $request)
+    {
         try {
             $user = User::where("id", auth()->user()->id)
-            ->first();
+                ->first();
 
-            if(!$user){
+            if (!$user) {
                 return response()->json(
                     [
                         "success" => false,
@@ -65,7 +64,7 @@ class UserController extends Controller
                     "success" => false,
                     "message" => "Validation failed",
                     "errors" => $validator->errors()
-                ],400);
+                ], 400);
             }
 
             if ($name) {
@@ -84,8 +83,6 @@ class UserController extends Controller
                 ],
                 200
             );
-    
-
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
@@ -94,38 +91,38 @@ class UserController extends Controller
             ], 500);
         }
     }
-    public function getAllUsers(){
-try {
-    $users = User::all();
-                 
-
-    if(!$users){
-        return response()->json([
-            'success' => false,
-            'message' => 'Users not found'
-        ], 400);
-    }
-
-    return response()->json([
-        'success' => true,
-        'message' => 'Users retrieved successfully',
-        'data'=>$users
-    ], 400);
-
-
-} catch (\Throwable $th) {
-    return response()->json([
-        'success' => false,
-        'message' => 'Users cannot be retrieved',
-        'error' => $th->getMessage()
-    ], 500);
-}
-    }
-    public function getUserProfile($id){
+    public function getAllUsers()
+    {
         try {
-            $user=User::where("id",$id)
-                      ->first();
-            if(!$user){
+            $users = User::all();
+
+
+            if (!$users) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Users not found'
+                ], 400);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Users retrieved successfully',
+                'data' => $users
+            ], 400);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Users cannot be retrieved',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+    public function getUserProfile($id)
+    {
+        try {
+            $user = User::where("id", $id)
+                ->first();
+            if (!$user) {
                 return response()->json([
                     'success' => false,
                     'message' => 'User not found',
@@ -137,15 +134,75 @@ try {
                 'message' => 'User profile retrieved successfully',
                 'data' => $user,
             ], 200);
-
-
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
                 'message' => 'User profile cannot be retrived',
+                'error' => $th->getMessage()
             ], 500);
         }
     }
 
+    public function updateUserProfile($id, Request $request)
+    {
+        try {
+            $user = User::find($id);
 
+            if (!$user) {
+                return response()->json(
+                    [
+                        "success" => false,
+                        "message" => "user not found"
+                    ],
+                    400
+                );
+            }
+          
+            if ($user->role_id === 2) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "You cannot update an admin",
+                ], 400);
+            }
+
+            $name = $request->input('name');
+            $biography = $request->input('biography');
+
+            $validator = Validator::make($request->all(), [ //validator facades
+                'name' => 'required|string|min:4|max:10',
+                'biography' => 'required|string|max:30'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "Validation failed",
+                    "errors" => $validator->errors()
+                ], 400);
+            }
+
+            if ($name) {
+                $user->name = $name;
+                $user->biography = $biography;
+            }
+
+
+            $user->save();
+
+            return response()->json(
+                [
+                    "success" => true,
+                    "message" => "user profile updated successfully",
+                    "data" => $user
+                ],
+                200
+            );
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User profile cannot be updated',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
 }
