@@ -94,7 +94,33 @@ class UserController extends Controller
             ], 500);
         }
     }
+    public function getAllUsers(){
+try {
+    $users = User::all();
+                 
 
+    if(!$users){
+        return response()->json([
+            'success' => false,
+            'message' => 'Users not found'
+        ], 400);
+    }
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Users retrieved successfully',
+        'data'=>$users
+    ], 400);
+
+
+} catch (\Throwable $th) {
+    return response()->json([
+        'success' => false,
+        'message' => 'Users cannot be retrieved',
+        'error' => $th->getMessage()
+    ], 500);
+}
+    }
     public function getUserProfile($id){
         try {
             $user=User::where("id",$id)
