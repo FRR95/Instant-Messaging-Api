@@ -37,4 +37,5 @@ Route::put('/user/me', [UserController::class, 'updateProfile']);
 Route::get('/users', [UserController::class, 'getAllUsers']);
 Route::get('/users/{id}', [UserController::class, 'getUserProfile']);
 Route::put('/users/{id}', [UserController::class, 'updateUserProfile'])->middleware('admin');
+Route::delete('/users/{id}', [UserController::class, 'deleteUserAccount'])->middleware('admin');
 });

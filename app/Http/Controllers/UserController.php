@@ -205,4 +205,45 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function deleteUserAccount($id){
+
+        try {
+            $user = User::find($id);
+
+            if (!$user) {
+                return response()->json(
+                    [
+                        "success" => false,
+                        "message" => "user not found"
+                    ],
+                    400
+                );
+            }
+
+            if ($user->role_id === 2) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "You cannot delete an admin",
+                ], 400);
+            }
+
+            $user->delete();
+
+            return response()->json([
+                "success" => true,
+                "message" => "User deleted successfully",
+            ], 200);
+
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User profile cannot be updated',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+
+    }
+    
 }
