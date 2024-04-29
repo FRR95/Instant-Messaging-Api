@@ -14,26 +14,24 @@ class ChatController extends Controller
     {
         try {
 
-        $userId = auth()->user()->id;
-        $chats= UserChat::where('user_id',$userId)
-                        ->with('chat')
-                        ->get()
-                        ->pluck('chat');
+            $userId = auth()->user()->id;
+            $chats = UserChat::where('user_id', $userId)
+                ->with('chat')
+                ->get()
+                ->pluck('chat');
 
-        if(!$chats){
+            if (!$chats) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'chats not found',
+                ], 400);
+            }
+
             return response()->json([
-                'success' => false,
-                'message' => 'chats not found',
-            ], 400);
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'chats retrieved successfully',
-            'data' => $chats,
-        ], 200);
-
-
+                'success' => true,
+                'message' => 'chats retrieved successfully',
+                'data' => $chats,
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
@@ -43,58 +41,114 @@ class ChatController extends Controller
         }
     }
 
-    public function createNewChat(Request $request){
-     try {
-        $userId = auth()->user()->id;
-        $name = $request->input('name');
-        if(!$userId){
+    public function createNewChat(Request $request)
+    {
+        try {
+            $userId = auth()->user()->id;
+            $name = $request->input('name');
+            if (!$userId) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found',
+                ], 400);
+            }
+
+            $validator = Validator::make($request->all(), [ //validator facades
+                'name' => 'required|string|min:4|max:10',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "Validation failed",
+                    "errors" => $validator->errors()
+                ]);
+            }
+
+            $newChat = new Chat();
+            $newChat->name = $name;
+            $newChat->author_id = $userId;
+
+            $newChat->save();
+
+            $userChat = new UserChat();
+
+            $userChat->user_id = $userId;
+            $userChat->chat_id = $newChat->id;
+
+            $userChat->save();
+
+
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Chats created successfully',
+                'data' => $newChat
+
+            ], 200);
+        } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
-                'message' => 'User not found',
+                'message' => 'Chats cannot be created',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateChat($id, Request $request)
+    {
+        try {
+        $findRoom= Chat::find($id);
+
+        if(!$findRoom){
+            return response()->json([
+                'success' => false,
+                'message' => 'Room not found',  
             ], 400);
         }
 
-        $validator = Validator::make($request->all(), [ //validator facades
-            'name' => 'required|string|min:4|max:10',
-        ]);
-
-        if ($validator->fails()) {
+        if($findRoom->author_id !== auth()->user()->id){
             return response()->json([
-                "success" => false,
-                "message" => "Validation failed",
-                "errors" => $validator->errors()
-            ]);
+                'success' => false,
+                'message' => 'You dont have permissions to update the room',  
+            ], 400);
         }
 
-        $newChat = new Chat();
-        $newChat->name = $name;
-        $newChat->author_id = $userId;
+        $name=$request->input('name');
 
-        $newChat->save();
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|min:4|max:10'
+        ]);
 
-        $userChat=new UserChat();
         
-        $userChat->user_id=$userId;
-        $userChat->chat_id=$newChat->id;
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Validation failed",
+                    "error" => $validator->errors()
+                ],
+                400
+            );
+        }
 
-        $userChat->save();
+        $findRoom->name=$name;
 
-     
-    
+        $findRoom->save();
+
         return response()->json([
             'success' => true,
-            'message' => 'Chats created successfully',
-            'data'=> $newChat
-      
+            'message' => 'Chat updated successfully',
+            'data' => $findRoom ,
         ], 200);
 
 
-     } catch (\Throwable $th) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Chats cannot be created',
-            'error' => $th->getMessage()
-        ], 500);
-     }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Chat cannot be updated',
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 }
