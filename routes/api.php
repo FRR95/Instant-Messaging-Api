@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\UserChatController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -50,5 +51,11 @@ Route::get('/chats', [ChatController::class, 'getUserChats']);
 Route::post('/chats', [ChatController::class, 'createNewChat']);
 Route::put('/chats/{id}', [ChatController::class, 'updateChat']);
 Route::delete('/chats/{id}', [ChatController::class, 'deleteChat']);
+});
+
+// USERCHAT CONTROLLERS
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/userchats/{id}', [UserChatController::class, 'getUsersChat']);
 });
 
