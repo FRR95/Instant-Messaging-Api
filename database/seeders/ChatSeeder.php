@@ -18,11 +18,15 @@ class ChatSeeder extends Seeder
         DB::table('chats')->insert([
             [
                 "name" => "Chat de Fran y Admin",
-                "author_id"=>1
+                "author_id"=>1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 "name" => "Chat de Anna y Robert",
-                "author_id"=>3
+                "author_id"=>3,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         ]);
     }
