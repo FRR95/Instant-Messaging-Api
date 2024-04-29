@@ -98,16 +98,16 @@ class ChatController extends Controller
     public function updateChat($id, Request $request)
     {
         try {
-        $findRoom= Chat::find($id);
+        $findChat= Chat::find($id);
 
-        if(!$findRoom){
+        if(!$findChat){
             return response()->json([
                 'success' => false,
                 'message' => 'Room not found',  
             ], 400);
         }
 
-        if($findRoom->author_id !== auth()->user()->id){
+        if($findChat->author_id !== auth()->user()->id){
             return response()->json([
                 'success' => false,
                 'message' => 'You dont have permissions to update the room',  
@@ -132,14 +132,14 @@ class ChatController extends Controller
             );
         }
 
-        $findRoom->name=$name;
+        $findChat->name=$name;
 
-        $findRoom->save();
+        $findChat->save();
 
         return response()->json([
             'success' => true,
             'message' => 'Chat updated successfully',
-            'data' => $findRoom ,
+            'data' => $findChat ,
         ], 200);
 
 
@@ -147,6 +147,41 @@ class ChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Chat cannot be updated',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function deleteChat($id, Request $request){
+        try {
+          $chat=Chat::find($id);
+
+          if(!$chat){
+            return response()->json([
+                'success' => false,
+                'message' => 'Chat not found',    
+            ], 400);
+          }
+
+          if($chat->author_id !== auth()->user()->id){
+            return response()->json([
+                'success' => false,
+                'message' => 'You dont have permissions to delete the room',  
+            ], 400);
+        }
+
+        $chat->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Chat deleted successfully',  
+        ], 200);
+
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Chat cannot be deleted',
                 'error' => $th->getMessage()
             ], 500);
         }
