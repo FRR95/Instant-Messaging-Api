@@ -47,5 +47,6 @@ Route::delete('/users/{id}', [UserController::class, 'deleteUserAccount'])->midd
 // CHAT CONTROLLERS
 Route::middleware(['auth:sanctum'])->group(function () {
 Route::get('/chats', [ChatController::class, 'getUserChats']);
+Route::post('/chats', [ChatController::class, 'createNewChat']);
 });
 
