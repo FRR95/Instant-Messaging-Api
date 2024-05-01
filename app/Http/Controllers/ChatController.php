@@ -166,7 +166,7 @@ class ChatController extends Controller
           if($chat->author_id !== auth()->user()->id){
             return response()->json([
                 'success' => false,
-                'message' => 'You dont have permissions to delete the room',  
+                'message' => 'You dont have permissions to delete the chat',  
             ], 400);
         }
 
