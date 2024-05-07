@@ -34,6 +34,7 @@ class MessageController extends Controller
             }
 
             $messagesChat = Message::where("chat_id", $chatId)
+            ->with("user")
                 ->get();
 
             return response()->json([

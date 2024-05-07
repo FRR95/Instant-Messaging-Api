@@ -61,7 +61,8 @@ class AuthController extends Controller
         }
     }
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         try {
             $email = $request->input('email');
             $password = $request->input('password');
@@ -84,53 +85,111 @@ class AuthController extends Controller
             }
 
             $user = User::query()
-            ->where('email', $email)
-            ->first();
+                ->where('email', $email)
+                ->first();
 
-        if (!$user) {
+            if (!$user) {
+                return response()->json(
+                    [
+                        "success" => false,
+                        "message" => "Email not found",
+
+                    ],
+                    400
+                );
+            }
+
+            $checkPasswordUser = Hash::check($password, $user->password);
+
+
+            if (!$checkPasswordUser) {
+                return response()->json(
+                    [
+                        "success" => false,
+                        "message" => "Incorrect password",
+
+                    ],
+                    400
+                );
+            }
+
+            $token = $user->createToken('api-token')->plainTextToken;
+
+
+
+            $user->is_active = 1;
+            $user->save();
+
+            // Responder con el token
             return response()->json(
                 [
-                    "success" => false,
-                    "message" => "Email not found",
-
+                    "success" => true,
+                    "message" => "User logged successfully",
+                    "token" => $token
                 ],
-                400
+                200
             );
-        }
-
-        $checkPasswordUser = Hash::check($password, $user->password);
-
-
-        if (!$checkPasswordUser) {
-            return response()->json(
-                [
-                    "success" => false,
-                    "message" => "Incorrect password",
-
-                ],
-                400
-            );
-        }
-
-        $token = $user->createToken('api-token')->plainTextToken;
-
-        // Responder con el token
-        return response()->json(
-            [
-                "success" => true,
-                "message" => "User logged successfully",
-                "token" => $token
-            ],
-            200
-        );
-
-
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
                 'message' => 'User cannot be logged',
                 'error' => $th->getMessage()
-            ]);
+            ], 500);
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        try {
+
+            // $user = User::where("id", auth()->user()->id)
+            //     ->get();
+
+
+            $request->user()->tokens()->delete();
+
+            // $user->is_active = 0;
+            // $user->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User logged out successfully',
+
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User cannot be logged out',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function userDisconnect(Request $request)
+    {
+        try {
+
+        
+
+                $user = User::query()
+                ->where('id', auth()->user()->id)
+                ->first();
+
+            $user->is_active = 0;
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User disconnected successfully',
+
+            ], 200);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User cannot be disconnected',
+                'error' => $th->getMessage()
+            ], 500);
         }
     }
 }

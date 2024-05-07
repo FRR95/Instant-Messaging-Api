@@ -170,7 +170,7 @@ class UserController extends Controller
 
             $validator = Validator::make($request->all(), [ //validator facades
                 'name' => 'required|string|min:4|max:10',
-                'biography' => 'required|string|max:30'
+                'biography' => 'required|string|max:40'
             ]);
 
             if ($validator->fails()) {
