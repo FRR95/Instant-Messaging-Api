@@ -91,24 +91,47 @@ class UserController extends Controller
             ], 500);
         }
     }
-    public function getAllUsers()
+    public function getAllUsers(Request $request)
     {
         try {
-            $users = User::all();
+
+            $nickname = $request->input('nickname');
+
+            if(!$nickname){
+                $users = User::all();
 
 
-            if (!$users) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Users not found'
-                ], 400);
+        
+
+               
             }
+
+            else{
+
+                $users = User::query()
+                              ->where("nickname","LIKE","%{$nickname}%")
+                              ->orWhere("name","LIKE","%{$nickname}%")
+                              ->get();
+            }
+
+            
+              
+            
+
+           
+
+            
+                         
+                       
+
+
+         
 
             return response()->json([
                 'success' => true,
                 'message' => 'Users retrieved successfully',
                 'data' => $users
-            ], 400);
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
