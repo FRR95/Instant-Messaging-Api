@@ -218,12 +218,12 @@ class UserController extends Controller
         }
     }
 
-    public function deleteOneUserAccount(Request $request){
+    public function deleteOneUserAccount($id,Request $request){
 
         try {
-            $userToRemove = $request->input("checkbox");
+          
       
-            $user = User::find($userToRemove);
+            $user = User::find($id);
 
      
 
@@ -242,7 +242,7 @@ class UserController extends Controller
             }
 
    
-          $userRemoved=  User::destroy($userToRemove);
+          $userRemoved= $user->delete();
                                
 
             return response()->json([
