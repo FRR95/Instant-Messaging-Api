@@ -115,17 +115,6 @@ class UserController extends Controller
             }
 
             
-              
-            
-
-           
-
-            
-                         
-                       
-
-
-         
 
             return response()->json([
                 'success' => true,
@@ -229,21 +218,22 @@ class UserController extends Controller
         }
     }
 
-    public function deleteUserAccount($id){
+    public function deleteOneUserAccount(Request $request){
 
         try {
-            $user = User::find($id);
+            $userToRemove = $request->input("checkbox");
+      
+            $user = User::find($userToRemove);
+
+     
+
 
             if (!$user) {
-                return response()->json(
-                    [
-                        "success" => false,
-                        "message" => "user not found"
-                    ],
-                    400
-                );
+                return response()->json([
+                    "success" => false,
+                    "message" => "User not found",
+                ], 400);
             }
-
             if ($user->role_id === 2) {
                 return response()->json([
                     "success" => false,
@@ -251,18 +241,59 @@ class UserController extends Controller
                 ], 400);
             }
 
-            $user->delete();
+   
+          $userRemoved=  User::destroy($userToRemove);
+                               
 
             return response()->json([
                 "success" => true,
                 "message" => "User deleted successfully",
+                "data"=>$userRemoved
             ], 200);
 
 
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
-                'message' => 'User profile cannot be updated',
+                'message' => 'User profile cannot be deleted',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+
+    }
+    public function deleteUserAccount(Request $request){
+
+        try {
+            $userToRemove = $request->input("checkbox");
+      
+            $user = User::find($userToRemove);
+
+     
+
+
+            if (!$user) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "User not found",
+                ], 400);
+            }
+          
+
+   
+          $userRemoved=  User::destroy($userToRemove);
+                               
+
+            return response()->json([
+                "success" => true,
+                "message" => "User deleted successfully",
+                "data"=>$userRemoved
+            ], 200);
+
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User profile cannot be deleted',
                 'error' => $th->getMessage()
             ], 500);
         }
