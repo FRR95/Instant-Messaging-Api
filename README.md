@@ -153,13 +153,12 @@ application/json
     - DELETE: Delete more than one user * 
     http://localhost:8000/api/users
 
-       ```sh
+    ```sh
     {
         "checkbox": "[array users id]",
-       
-       
     }
     ```
+
 
       - DELETE: Delete  one user * 
        http://localhost:8000/api/user/{id}
@@ -218,7 +217,7 @@ application/json
    - POST: create new message to chat *
     http://localhost:8000/api/messages/{chatId}
 
-       ```sh
+    ```sh
     {
         "content": "[your message content here]"
     }
@@ -250,7 +249,7 @@ application/json
 
     admin account
 
-      ```sh
+    ```sh
     {
         "email":"Admin@gmail.com",
         "password":"12345678"
