@@ -96,22 +96,16 @@ class UserController extends Controller
         try {
 
             $nickname = $request->input('nickname');
-
-            if(!$nickname){
-                $users = User::all();
+            $page = $request->query('page', 1);
 
 
-        
-
-               
-            }
-
-            else{
-
+            if (!$nickname) {
+                $users = User::paginate(2, ['*'], 'page', $page);
+            } else {
                 $users = User::query()
-                              ->where("nickname","LIKE","%{$nickname}%")
-                              ->orWhere("name","LIKE","%{$nickname}%")
-                              ->get();
+                             ->where("nickname", "LIKE", "%{$nickname}%")
+                             ->orWhere("name", "LIKE", "%{$nickname}%")
+                             ->get();
             }
 
             
