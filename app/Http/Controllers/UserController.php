@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Mockery\Undefined;
 
 class UserController extends Controller
 {
@@ -99,9 +100,14 @@ class UserController extends Controller
             $page = $request->query('page', 1);
 
 
+          
+
+
             if (!$nickname) {
                 $users = User::paginate(2, ['*'], 'page', $page);
-            } else {
+            } 
+            
+            else {
                 $users = User::query()
                              ->where("nickname", "LIKE", "%{$nickname}%")
                              ->orWhere("name", "LIKE", "%{$nickname}%")

@@ -50,6 +50,35 @@ class UserChatController extends Controller
         }
     }
 
+    public function getAllUsersChat(Request $request)
+    {
+        try {
+
+       $users = User::all();
+
+       if(!$users){
+        return response()->json([
+            'success' => false,
+            'message' => 'Users not found',
+        ], 400);
+       }
+
+            
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Users retrieved successfully',
+                'data' => $users
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Users cannot be retrieved',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
     public function addUserToChat($userId, $chatId, Request $request)
     {
         try {

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/userchats/{id}', [UserChatController::class, 'getUsersChat']);//
+    Route::get('/userchats', [UserChatController::class, 'getAllUsersChat']);//
     Route::post('/userchats/user/{userId}/chat/{chatId}', [UserChatController::class, 'addUserToChat']);//
     Route::delete('/userchats/user/{userId}/chat/{chatId}', [UserChatController::class, 'removeUserToChat']);//
     Route::delete('/userchats/user/{chatId}', [UserChatController::class, 'leaveChat']);//
