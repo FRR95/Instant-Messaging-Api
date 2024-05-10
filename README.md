@@ -1,66 +1,281 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+### Laravel Backend LetsApp! 
+<img src="https://cdn-icons-png.flaticon.com/512/4564/4564089.png"   alt="" />
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<p>Hi geeks!,i´ve made an api backend about an instant messaging app </p>
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Index 📚
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<details>
+  <summary> Content 📝</summary>
+  <ol>
+    <li><a href="#local-installation">Local installation</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#database-design">Database Design</a></li>
+    <li><a href="#endpoints">Endpoints</a></li>
+    <li><a href="#future-features">Future features</a></li>
+    <li><a href="#author-">Author</a></li>
+    <li><a href="#time-of-development-">Time of development</a></li>
+  </ol>
+</details>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+### Local installation 
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. If you don't have MySQL installed on you computer, you can install Docker and execute the above command on your Powershell to create a MySQL container
+` $ docker run --name container-name -p 3307:3306 -e MYSQL_ROOT_PASSWORD=1234 -d mysql `
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. Clone the repository
+` $ git clone https://github.com/FRR95/Instant-Messaging-Api.git `
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. Install dependencies
+  `$ composer install`
 
-## Laravel Sponsors
+4. Run Migrations and seeders
+`$ php artisan migrate:fresh --seed`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
+You will need to rename the ".env.sample" to ".env". That .env.sample matches the MySQL credentials on the Docker we put as example.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
 
-## Contributing
+### Stack 
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+<div align="center">
+<a href="https://www.mysql.com/">
+    <img src= "https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white"/>
+</a>
+<a href="https://www.php.net/">
+    <img src= "https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white"/>
+</a>
+<a href="https://laravel.com/">
+    <img src= "https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white"/>
+</a>
+<a href="https://getcomposer.org/">
+    <img src= "https://img.shields.io/badge/Composer-885630?style=for-the-badge&logo=Composer&logoColor=white"/>
+</a>
+  <a href="https://git-scm.com/">
+    <img src="https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white"/>
+</a>
+  <a href="https://www.postman.com/">
+    <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"/>
+</a>
+</div>
 
-## Code of Conduct
+### Database Design 
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+![BD](public/imgs/diagrama-base-de-datos.PNG)
 
-## Security Vulnerabilities
+### Endpoints 
+<details>
+<summary>Details</summary>
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**In every endpoint you need to put this in your client**
 
-## License
+- Headers > Accept > value
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+``` json
+application/json
+```
+
+
+- Auth
+    - Register:
+
+            POST http://localhost:8000/api/auth/register
+        
+        body:
+
+
+        ``` json
+            {
+                "name": "Luis",
+                "nickname":"@Luis",
+                "email": "luis@luis.com",
+                "password": "12345678"
+            }
+        ```
+
+
+    - Log in
+
+            POST http://localhost:8000/api/login 
+        
+        body:
+
+
+        ``` json
+            {
+                "email": "luis@luis.com",
+                "password": "12345678"
+            }
+        ```
+    
+    - GET: Get user profile info *
+    http://localhost:8000/api/user/me
+
+
+    - DELETE: logout *
+    http://localhost:8000/api/logout
+
+    - POST: change is active user to false *
+    http://localhost:8000/api/logout
+
+- Users
+    - PUT: update profile *
+    http://localhost:8000/api/user/me
+
+    ```sh
+    {
+        "name":"[your name here]",
+        "biography":"[your biography here]"
+    }
+    ```
+
+    - GET: get all users *
+    http://localhost:8000/api/users?page=(number of page)?nickname=(user name or nickname)
+
+    - GET: get user profile * 
+    http://localhost:8000/api/users/{id}
+
+
+    - PUT: update user profile by Id * (admin)
+    http://localhost:8000/api/games/{id}
+
+    ```sh
+    {
+        "name": "[your name here]",
+        "biography": "[biography here]"
+       
+    }
+    ```
+
+    - DELETE: Delete more than one user * 
+    http://localhost:8000/api/users
+
+       ```sh
+    {
+        "checkbox": "[array users id]",
+       
+       
+    }
+    ```
+
+      - DELETE: Delete  one user * 
+       http://localhost:8000/api/user/{id}
+
+
+- Chats
+    - GET: get user chats *
+    http://localhost:8000/api/chats
+
+
+    - POST: create new chat *
+    http://localhost:8000/api/chats 
+
+
+    ```sh
+    {
+        "name": "[chat name here]",
+    }
+    ```
+
+    - PUT: update chat *
+    http://localhost:8000/api/chats/{id}
+
+
+    ```sh
+    {
+        "name": "[chat here]"
+    }
+    ```
+
+    - DELETE: delete chat *
+    http://localhost:8000/api/chats/{id}
+
+- User Chats
+
+    - GET: get all users from chat *
+    http://localhost:8000/api/userchats/{id}
+
+
+    - POST: add user to chat * (author of the chat)
+    http://localhost:8000/api/userchats/user/{userId}/chat/{chatId}
+
+
+    - DELETE: remove user from chat * (author of the chat)
+    http://localhost:8000/api/userchats/user/{userId}/chat/{chatId}
+
+    - DELETE: leave chat * 
+    http://localhost:8000/api/userchats/user/{chatId}
+  
+
+- Messages
+
+   - GET: get all messages from chat *
+    http://localhost:8000/api/messages/{chatId}
+
+   - POST: create new message to chat *
+    http://localhost:8000/api/messages/{chatId}
+
+       ```sh
+    {
+        "content": "[your message content here]"
+    }
+    ```
+
+  - PUT: update your message*
+    http://localhost:8000/api/messages/{chatId}/message/{messageId}
+
+
+    ```sh
+    {
+        "content": "[your message content here]"
+    }
+    ```
+ 
+  - DELETE: delete your message *
+    http://localhost:8000/api/messages/{chatId}/message/{messageId}
+
+
+*In these cases you need to put your token in your client
+
+- Auth>Bearer>Bearer Token
+
+    ```sh
+    {
+        [your token here]
+    }
+    ```
+
+    admin account
+
+      ```sh
+    {
+        "email":"Admin@gmail.com",
+        "password":"12345678"
+    }
+    ```
+
+</details>
+
+### Future features 
+
+ ⬜Send direct messages to one User (MD)
+ 
+
+
+### Author 🙍‍♂️
+
+- **Francisco Rocher Roure** - FullStack Developer
+  - [GitHub](https://github.com/FRR95) - [LinkedIn](https://www.linkedin.com/in/franciscorocher/) - [Portfolio](https://franciscorocherdev.com/)
+
+### Time of development ⌛
+
+- Two Weeks
+
+
+
+
+
+
