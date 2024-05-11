@@ -20,21 +20,30 @@ class MessageSeeder extends Seeder
                 'content' => 'soy Admin y este es mi primer mensaje para Fran',
                 'chat_id' => 1,
                 'user_id' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+
             ],
             [
                 'content' => 'soy Fran y este es mi primer mensaje para Admin',
                 'chat_id' => 1,
                 'user_id' => 2,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'content' => 'soy Robert y este es mi primer mensaje para Anna',
                 'chat_id' => 2,
                 'user_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'content' => 'soy Anna y este es mi primer mensaje para Robert',
                 'chat_id' => 2,
                 'user_id' => 4,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
     }
