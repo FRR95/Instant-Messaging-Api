@@ -62,6 +62,28 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
                 'role_id' => 1,
             ],
+            [
+                'name' => 'Luis',
+                'nickname' => '@Luis',
+                'url_profile_image'=>'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png',
+                'biography'=>'Hola soy Luis y esta es mi biografía',
+                'email' => 'Luis@gmail.com',
+                'password' => Hash::make('12345678'),
+                'created_at' => now(),
+                'updated_at' => now(),
+                'role_id' => 1,
+            ],
+            [
+                'name' => 'Marta',
+                'nickname' => '@Marta',
+                'url_profile_image'=>'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png',
+                'biography'=>'Hola soy Marta y esta es mi biografía',
+                'email' => 'Marta@gmail.com',
+                'password' => Hash::make('12345678'),
+                'created_at' => now(),
+                'updated_at' => now(),
+                'role_id' => 1,
+            ],
         ]);
     }
 }
