@@ -99,7 +99,7 @@ application/json
 
     - Log in
 
-            POST http://localhost:8000/api/login 
+            POST http://localhost:8000/api/auth/login 
         
         body:
 
