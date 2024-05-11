@@ -89,9 +89,9 @@ application/json
 
         ``` json
             {
-                "name": "Luis",
-                "nickname":"@Luis",
-                "email": "luis@luis.com",
+                "name": "Paul",
+                "nickname":"@Paul",
+                "email": "Paul@gmail.com",
                 "password": "12345678"
             }
         ```
