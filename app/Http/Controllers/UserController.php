@@ -100,21 +100,19 @@ class UserController extends Controller
             $page = $request->query('page', 1);
 
 
-          
+
 
 
             if (!$nickname) {
                 $users = User::paginate(3, ['*'], 'page', $page);
-            } 
-            
-            else {
+            } else {
                 $users = User::query()
-                             ->where("nickname", "LIKE", "%{$nickname}%")
-                             ->orWhere("name", "LIKE", "%{$nickname}%")
-                             ->get();
+                    ->where("nickname", "LIKE", "%{$nickname}%")
+                    ->orWhere("name", "LIKE", "%{$nickname}%")
+                    ->get();
             }
 
-            
+
 
             return response()->json([
                 'success' => true,
@@ -169,7 +167,7 @@ class UserController extends Controller
                     400
                 );
             }
-          
+
             if ($user->role_id === 2) {
                 return response()->json([
                     "success" => false,
@@ -218,14 +216,15 @@ class UserController extends Controller
         }
     }
 
-    public function deleteOneUserAccount($id,Request $request){
+    public function deleteOneUserAccount($id, Request $request)
+    {
 
         try {
-          
-      
+
+
             $user = User::find($id);
 
-     
+
 
 
             if (!$user) {
@@ -241,17 +240,15 @@ class UserController extends Controller
                 ], 400);
             }
 
-   
-          $userRemoved= $user->delete();
-                               
+
+            $userRemoved = $user->delete();
+
 
             return response()->json([
                 "success" => true,
                 "message" => "User deleted successfully",
-                "data"=>$userRemoved
+                "data" => $userRemoved
             ], 200);
-
-
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
@@ -259,16 +256,31 @@ class UserController extends Controller
                 'error' => $th->getMessage()
             ], 500);
         }
-
     }
-    public function deleteUserAccount(Request $request){
+    public function deleteUserAccount(Request $request)
+    {
 
         try {
             $userToRemove = $request->input("checkbox");
-      
+
             $user = User::find($userToRemove);
 
-     
+            $userArray = [];
+
+            foreach ($user as $u) {
+                $userArray[] = $u->role_id;
+
+
+                if($userArray ===2){
+                    return response()->json([
+                        "success" => false,
+                        "message" => "You cannot delete the admin",
+                    ], 400);
+                }
+
+
+              
+            }
 
 
             if (!$user) {
@@ -277,19 +289,17 @@ class UserController extends Controller
                     "message" => "User not found",
                 ], 400);
             }
-          
 
-   
-          $userRemoved=  User::destroy($userToRemove);
-                               
+
+
+            $userRemoved =  User::destroy($userToRemove);
+
 
             return response()->json([
                 "success" => true,
                 "message" => "User deleted successfully",
-                "data"=>$userRemoved
+                "data" => $userRemoved
             ], 200);
-
-
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
@@ -297,7 +307,5 @@ class UserController extends Controller
                 'error' => $th->getMessage()
             ], 500);
         }
-
     }
-    
 }
